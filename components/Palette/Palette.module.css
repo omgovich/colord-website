@@ -1,0 +1,18 @@
+.palette {
+  display: inline-flex;
+  vertical-align: top;
+  padding: 6px;
+  margin-top: 4px;
+  border-radius: var(--ui-radius-2);
+  background-color: hsla(0 0% var(--lightness-100) / 0.25);
+}
+
+.swatch {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--ui-radius-3);
+}
+
+.swatch:not(:last-child) {
+  margin-right: 6px;
+}

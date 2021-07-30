@@ -1,0 +1,55 @@
+:root {
+  --lightness-100: 100%;
+  --lightness-0: 0%;
+
+  --ui-radius-1: 16px;
+  --ui-radius-2: 12px;
+  --ui-radius-3: 8px;
+
+  --ui-spacing-1: 56px;
+  --ui-spacing-2: 32px;
+  --ui-spacing-3: 24px;
+  --ui-spacing-4: 16px;
+
+  --ui-font-size-1: 72px;
+  --ui-font-size-2: 52px;
+  --ui-font-size-3: 32px;
+  --ui-font-size-4: 24px;
+  --ui-font-size-5: 22px;
+  --ui-font-size-6: 20px;
+  --ui-font-size-7: 18px;
+
+  --color-transition-duration: 0.3s;
+
+  --title-family: "Unica One", Arial, sans-serif;
+  --body-family: "Roboto Mono", monospace;
+}
+
+@media (max-width: 880px) {
+  :root {
+    --ui-font-size-1: 56px;
+    --ui-font-size-2: 44px;
+    --ui-font-size-3: 28px;
+    --ui-font-size-4: 22px;
+    --ui-font-size-5: 16px;
+    --ui-font-size-6: 16px;
+    --ui-font-size-7: 16px;
+
+    --ui-spacing-1: 48px;
+    --ui-spacing-2: 22px;
+    --ui-spacing-3: 18px;
+    --ui-spacing-4: 12px;
+  }
+}
+
+html,
+body {
+  height: 100%;
+  padding: 0;
+  margin: 0;
+  font: normal var(--ui-font-size-5)/1.4 var(--body-family);
+}
+
+* {
+  box-sizing: border-box;
+}

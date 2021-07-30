@@ -1,0 +1,34 @@
+.section {
+  position: relative;
+  padding: var(--ui-spacing-2);
+  border-radius: var(--ui-radius-1);
+  border: 2px solid hsla(0 0% var(--lightness-100) / 0.05);
+  background-color: hsla(0 0% var(--lightness-100) / 0.05);
+  box-shadow: 0 12px 32px hsla(0 0% 0% / 0.1);
+  transition: border-color var(--color-transition-duration), background-color var(--color-transition-duration);
+}
+
+.title {
+  padding: 12px;
+  margin: -12px -12px var(--ui-spacing-3);
+  border-radius: var(--ui-radius-2);
+  background-color: hsla(0 0% 0% / 0.05);
+  font-family: var(--title-family);
+  font-size: var(--ui-font-size-3);
+  line-height: 1;
+  font-weight: normal;
+  text-transform: uppercase;
+  text-align: center;
+  transition: background-color var(--color-transition-duration);
+}
+
+.compact {
+  padding: var(--ui-spacing-3);
+  font-size: var(--ui-font-size-7);
+}
+
+.compact .title {
+  margin-bottom: var(--ui-spacing-4);
+  padding: 10px 12px;
+  font-size: var(--ui-font-size-4);
+}

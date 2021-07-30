@@ -1,0 +1,19 @@
+.result {
+  padding: 0 12px;
+  margin: 0 -12px;
+}
+
+.result:not(:last-child) {
+  margin-bottom: 12px;
+  padding-bottom: 12px;
+  border-bottom: 2px solid hsla(0 0% var(--lightness-100) / 0.1);
+  transition: border-bottom-color var(--color-transition-duration);
+}
+
+.resultTitle {
+  opacity: 0.7;
+  font-size: 16px;
+  text-transform: uppercase;
+}
+
+.resultValue {}
