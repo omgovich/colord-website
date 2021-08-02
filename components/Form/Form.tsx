@@ -78,7 +78,7 @@ export const Form = ({ color, onColorChange }: Props) => {
         </Result.Root>
         <Result.Root>
           <Result.Title>CSS keyword</Result.Title>
-          <Result.Value>{instance.toName() || '—'}</Result.Value>
+          <Result.Value>{instance.toName() || `~${instance.toName({ closest: true })}`}</Result.Value>
         </Result.Root>
       </Section>
 
