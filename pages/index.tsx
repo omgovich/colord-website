@@ -3,6 +3,7 @@ import { StarFilledIcon } from '@radix-ui/react-icons'
 import Head from 'next/head'
 import { colord } from "../utils/colord";
 import { useStargazerCount } from '../hooks/useStargazerCount'
+import { useFavicon } from '../hooks/useFavicon'
 import Form from '../components/Form'
 import Section from '../components/Section'
 import styles from '../styles/index.module.css'
@@ -11,6 +12,7 @@ export default function Index() {
   const root = useRef<HTMLDivElement>(null)
   const [color, setColor] = useState('#dc143c')
   const stars = useStargazerCount()
+  useFavicon(color)
 
   const background = useMemo(() => {
     const color2 = colord(color).alpha(1).desaturate(0.12).lighten(0.12)
