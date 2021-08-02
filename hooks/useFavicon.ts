@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react'
 import { useDebounce } from 'use-debounce'
+import { colord } from "../utils/colord";
 
 const ICON_SIZE = 64;
 
@@ -23,7 +24,7 @@ export const useFavicon = (color: string) => {
     if (!ctx) return;
 
     // draw favicon
-    ctx.fillStyle = faviconColor
+    ctx.fillStyle = colord(faviconColor).alpha(1).toHex()
     ctx.fillRect(0, 0, ICON_SIZE, ICON_SIZE);
 
     // create a new favicon tag
