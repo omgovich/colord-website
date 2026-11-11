@@ -14,7 +14,7 @@ const adopters = [
   { name: "GitLab", url: "https://gitlab.com" },
   { name: "WordPress", url: "https://wordpress.org" },
   { name: "PixiJS", url: "https://pixijs.com" },
-  { name: "cssnano ≤v6", url: "https://cssnano.github.io/cssnano/" },
+  { name: "cssnano", url: "https://cssnano.github.io/cssnano/" },
   { name: "Stylelint", url: "https://stylelint.io" },
   { name: "pdf.net", url: "https://pdf.net" },
 ];
