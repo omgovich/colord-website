@@ -772,32 +772,48 @@ export default function Playground() {
   }, [landedId]);
   useEffect(() => {
     if (!pendingReveal.current || blocksOpen) return;
+    let frame = 0;
     let nextFrame = 0;
-    const frame = requestAnimationFrame(() => {
-      nextFrame = requestAnimationFrame(() => {
-        const id = pendingReveal.current;
-        pendingReveal.current = null;
-        if (!id) return;
-        const card = document.querySelector<HTMLElement>(
-          `[data-step-id="${id}"] .operation-card`,
-        );
-        if (!card) return;
-        const rect = card.getBoundingClientRect();
-        const viewport = window.visualViewport;
-        const top = viewport?.offsetTop ?? 0;
-        const height = viewport?.height ?? innerHeight;
-        if (rect.top >= top + 24 && rect.bottom <= top + height - 24) return;
-        card.scrollIntoView({
-          behavior: reduced ? "instant" : "smooth",
-          block: rect.height > height - 48 ? "start" : "nearest",
+    // Output parameters swap after their exit animation; reveal the final size.
+    const timer = setTimeout(
+      () => {
+        frame = requestAnimationFrame(() => {
+          nextFrame = requestAnimationFrame(() => {
+            const id = pendingReveal.current;
+            pendingReveal.current = null;
+            if (!id) return;
+            const isOutput = id === "output";
+            const card = document.querySelector<HTMLElement>(
+              isOutput
+                ? ".output-block"
+                : `[data-step-id="${id}"] .operation-card`,
+            );
+            if (!card) return;
+            const rect = card.getBoundingClientRect();
+            const viewport = window.visualViewport;
+            const top = viewport?.offsetTop ?? 0;
+            const height = viewport?.height ?? innerHeight;
+            if (
+              rect.top >= top + 24 &&
+              rect.top + card.offsetHeight <= top + height - 24
+            )
+              return;
+            card.scrollIntoView({
+              behavior: reduced ? "instant" : "smooth",
+              block:
+                isOutput || rect.height > height - 48 ? "start" : "nearest",
+            });
+          });
         });
-      });
-    });
+      },
+      pendingReveal.current === "output" ? 180 : 0,
+    );
     return () => {
+      clearTimeout(timer);
       cancelAnimationFrame(frame);
       cancelAnimationFrame(nextFrame);
     };
-  }, [steps, blocksOpen, reduced]);
+  }, [steps, output, blocksOpen, reduced]);
   const valid = isValidColor(draft);
   const changeSource = (value: string) => {
     setInput(value);
@@ -821,6 +837,7 @@ export default function Playground() {
     setInsertIndex(null);
   };
   const selectOutput = (kind: OutputKind) => {
+    pendingReveal.current = "output";
     setOutput((current) => ({ ...current, kind }));
     setAnnouncement(`${OUTPUT_META[kind].label} output selected.`);
   };

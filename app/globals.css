@@ -1017,6 +1017,7 @@ svg {
   background: #86658f44;
 }
 .output-block {
+  scroll-margin-block: 24px;
   border-radius: 6px 30px 12px 30px;
   padding: 17px 22px;
   width: calc(100% - 60px);
