@@ -55,7 +55,6 @@ import {
   useReducedMotion,
 } from "motion/react";
 import {
-  ArrowDownUp,
   Check,
   ChevronDown,
   Dices,
@@ -347,23 +346,20 @@ function OutputLibrary({
             onClick={() => onSelect(kind)}
           >
             <span>{OUTPUT_META[kind].label}</span>
-            <span className="round-action" aria-hidden="true">
-              <AnimatePresence initial={false} mode="wait">
+            <AnimatePresence initial={false}>
+              {selected === kind && (
                 <motion.span
-                  key={selected === kind ? "checked" : "idle"}
+                  className="round-action"
+                  aria-hidden="true"
                   initial={{ opacity: 0, scale: 0.7 }}
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0.7 }}
                   transition={{ duration: 0.15 }}
                 >
-                  {selected === kind ? (
-                    <Check size={17} />
-                  ) : (
-                    <ArrowDownUp size={16} />
-                  )}
+                  <Check size={17} />
                 </motion.span>
-              </AnimatePresence>
-            </span>
+              )}
+            </AnimatePresence>
           </button>
         ))}
       </div>
