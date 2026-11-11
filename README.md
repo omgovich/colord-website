@@ -1,34 +1,42 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# colord.dev
 
-## Getting Started
+The interactive home of [colord](https://github.com/omgovich/colord), built with Next.js App Router and TypeScript from the approved Pen design.
 
-First, run the development server:
+## Run
 
-```bash
+```sh
+npm install
 npm run dev
-# or
-yarn dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open http://localhost:3000. If the host runs out of filesystem watchers, use `WATCHPACK_POLLING=1000 npm run dev`.
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+```sh
+npm test
+npm run typecheck
+npm run build
+npm start
+```
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.tsx`.
+## Playground
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+Seven transformations can be added, reordered or removed. Lightness and Saturation use signed values; Mix supports LAB/RGB. Drag the handles, use Space/arrow keys/Space, or add blocks with +. A compact dropdown beside each + provides the same operations on phones, with keyboard navigation and insertion at the selected position.
 
-## Learn More
+Eight terminal outputs: Color, Palette, Harmony, Contrast, Readability, Difference, Minify and Info. Color supports twelve formats and string/object representations where the API supports them. Color fields accept colord's supported CSS syntax, and open react-colorful pickers. Invalid drafts preserve the last valid result. The generated example includes the required plugin imports and matches the displayed result.
 
-To learn more about Next.js, take a look at the following resources:
+`lib/color-engine.ts` owns calculation/code generation. Tests execute generated examples in fresh Node processes. Interface components are under `components/`; `app/globals.css` styles the playground and `components/site-shell.css` the header, proof panels and footer. Fonts are bundled locally. Animations respect reduced-motion preferences.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Social image and deployment
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+`public/og.png` is the approved 1200×630 vivid B export from `colord.pen`. Both Open Graph and Twitter metadata reference it. The site includes the gradient crown favicon, robots.txt and sitemap. `/docs` redirects to the upstream API documentation.
 
-## Deploy on Vercel
+Vercel detects the **Next.js** preset. No environment variables or external services are required. Add `colord.dev` to the project's domains when deploying.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Published metrics
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+Metrics are a static snapshot checked on 2026-11-11:
+
+- 91,202,231 downloads over 2026-10-12–2026-11-10: [npm API](https://api.npmjs.org/downloads/point/last-month/colord).
+- 1,893 stars and 9.5M+ projects: [GitHub/README](https://github.com/omgovich/colord).
+- Benchmark: colord 12,563,332 ops/s; tinycolor2 1,377,870; chroma-js 1,277,114; ac-colors 1,176,078; color 1,073,550. [Workflow run](https://github.com/omgovich/colord/actions/runs/42921880592), Ubuntu 24.04 / 4 vCPU / Node 22. Performance depends on the machine.
+- Core size, TypeScript, zero dependencies and coverage claims follow the project README. Refresh published snapshots when updating the library.

@@ -3,27 +3,32 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev -p 3030",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint"
+    "dev": "next dev --webpack --hostname 0.0.0.0",
+    "build": "next build --webpack",
+    "start": "next start --hostname 0.0.0.0",
+    "typecheck": "tsc --noEmit",
+    "test": "node --experimental-strip-types --test tests/color-engine.test.ts"
   },
   "dependencies": {
-    "@radix-ui/react-icons": "^1.0.3",
-    "@radix-ui/react-id": "^0.0.6",
-    "@radix-ui/react-popover": "^0.0.19",
-    "clsx": "^1.1.1",
-    "colord": "^2.5.0",
-    "next": "11.0.1",
-    "react": "17.0.2",
-    "react-colorful": "^5.3.0",
-    "react-dom": "17.0.2",
-    "use-debounce": "^7.0.0"
+    "@dnd-kit/core": "^6.3.1",
+    "@dnd-kit/sortable": "^10.0.0",
+    "@dnd-kit/utilities": "^3.2.2",
+    "@floating-ui/react": "^0.27.20",
+    "@fontsource-variable/manrope": "^5.2.0",
+    "@fontsource/dm-mono": "^5.2.0",
+    "@fontsource/dm-sans": "^5.3.0",
+    "colord": "2.12.0",
+    "lucide-react": "^0.468.0",
+    "motion": "^14.12.0",
+    "next": "16.4.6",
+    "react": "^19.2.0",
+    "react-colorful": "^5.8.1",
+    "react-dom": "^19.2.0"
   },
   "devDependencies": {
-    "@types/react": "17.0.14",
-    "eslint": "7.31.0",
-    "eslint-config-next": "11.0.1",
-    "typescript": "4.3.5"
+    "@types/node": "^22.0.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "typescript": "^5.9.0"
   }
 }

@@ -1,0 +1,75 @@
+/* One diffuse pool of light spans the entire scene.
+   Each card receives the same image, offset into its own coordinate system. */
+.glass::after,
+.code-panel::after,
+.shell-proof-panel::after,
+.shell-facts-ribbon::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  width: auto;
+  height: auto;
+  border-radius: inherit;
+  pointer-events: none;
+  transform: none;
+  background-image: radial-gradient(
+    ellipse 680px 500px at 50% 50%,
+    #ffffff52 0%,
+    #ffffff26 25%,
+    #ffffff0f 45%,
+    #ffffff04 65%,
+    #ffffff00 85%
+  );
+  background-size: 2400px 1800px;
+  background-position: calc(var(--reflection-x, 0px) - 1200px)
+    calc(var(--reflection-y, 0px) - 900px);
+  background-repeat: no-repeat;
+  opacity: 0.6;
+  mix-blend-mode: screen;
+  transition: none;
+}
+.code-panel,
+.shell-facts-ribbon {
+  position: relative;
+  isolation: isolate;
+}
+.code-panel {
+  position: relative;
+}
+.glass::after,
+.shell-proof-panel::after,
+.code-panel::after,
+.shell-facts-ribbon::after {
+  z-index: -1;
+}
+.sphere-reflection {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background:
+    radial-gradient(
+      ellipse 30% 20% at 34% 24%,
+      #ffffff70 0%,
+      #ffffff32 36%,
+      #ffffff0c 72%,
+      #ffffff00 100%
+    ),
+    radial-gradient(ellipse 48% 32% at 39% 21%, #ffffff22 0%, #ffffff00 100%);
+  filter: blur(2px);
+  transform: rotate(-15deg);
+  opacity: 0.9;
+}
+@media (max-width: 1050px) {
+  .code-panel {
+    position: relative;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .glass::after,
+  .code-panel::after,
+  .shell-proof-panel::after,
+  .shell-facts-ribbon::after {
+    display: none;
+  }
+}
