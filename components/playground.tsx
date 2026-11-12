@@ -56,10 +56,8 @@ import {
 } from "motion/react";
 import {
   Check,
-  ChevronDown,
   Dices,
   GripVertical,
-  Layers2,
   Plus,
   RotateCcw,
   X,
@@ -398,6 +396,7 @@ function InsertSlot({
         {...menuProps}
       >
         <Plus size={10} />
+        <span className="insert-point-label">Add block</span>
       </button>
       <AnimatePresence>
         {opening && kind && (
@@ -1048,16 +1047,6 @@ export default function Playground() {
               ))}
             </div>
           </aside>
-          <div className="mobile-blocks-toolbar">
-            <button
-              className="mobile-blocks-button"
-              {...blockTriggerProps(`${inputId}-blocks`)}
-            >
-              <Layers2 size={16} />
-              Blocks
-              <ChevronDown size={13} />
-            </button>
-          </div>
           <div className="color-flow">
             <div className="source-color">
               <ColorPicker

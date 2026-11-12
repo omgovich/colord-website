@@ -6,7 +6,6 @@
   :is(
     .shell-header-identity,
     .shell-header-nav,
-    .mobile-blocks-toolbar,
     .source-color,
     .library-heading,
     .library-operation,
@@ -23,9 +22,6 @@
 
 .site-entering .shell-header-nav {
   --entrance-delay: 60ms;
-}
-.site-entering .mobile-blocks-toolbar {
-  --entrance-delay: 100ms;
 }
 .site-entering .source-color {
   --entrance-delay: 120ms;

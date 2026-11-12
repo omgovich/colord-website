@@ -616,6 +616,9 @@ svg {
   inset: -10px;
   border-radius: 50%;
 }
+.insert-point-label {
+  display: none;
+}
 .insert-point:hover,
 .insert-point:focus-visible {
   transform: scale(1.45);
@@ -1431,9 +1434,6 @@ svg {
   color: #50345e;
   outline: none;
 }
-.mobile-blocks-toolbar {
-  display: none;
-}
 .block-menu {
   z-index: 100;
   width: min(248px, calc(100vw - 24px));
@@ -1479,22 +1479,6 @@ svg {
   height: 26px;
   flex-shrink: 0;
   border-radius: 4px 9px 5px 9px;
-}
-.mobile-blocks-button {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  height: 40px;
-  padding: 0 14px;
-  background: #ffffff80;
-  border: 1px solid #ffffffbb;
-  color: #70537d;
-  border-radius: 10px;
-  font-size: 12px;
-  box-shadow: inset 0 1px 3px #fff;
-}
-.mobile-blocks-button > svg:last-child {
-  margin-left: 13px;
 }
 @keyframes popover-in {
   from {
@@ -1554,10 +1538,37 @@ svg {
   .operations-library {
     display: none;
   }
-  .mobile-blocks-toolbar {
+  .insert-slot {
+    min-height: 64px;
+  }
+  .insert-point {
     display: flex;
-    width: 100%;
-    margin-bottom: 28px;
+    justify-content: center;
+    gap: 6px;
+    width: auto;
+    height: 40px;
+    padding: 0 13px;
+    border-radius: 22px;
+    border-color: #d9c9e2;
+    background: #fcf8ff;
+    box-shadow: 0 2px 8px #80678c0a;
+  }
+  .insert-point::before {
+    inset: -2px;
+    border-radius: inherit;
+  }
+  .insert-point > svg {
+    width: 17px;
+    height: 17px;
+  }
+  .insert-point-label {
+    display: inline;
+    font-size: 12px;
+    font-weight: 500;
+  }
+  .insert-point:hover,
+  .insert-point:focus-visible {
+    transform: scale(1.04);
   }
   .right-rail {
     position: static;
@@ -1606,9 +1617,6 @@ svg {
   .workspace {
     padding-top: 27px;
     width: calc(100% - 40px);
-  }
-  .mobile-blocks-toolbar {
-    margin-bottom: 26px;
   }
   .color-flow {
     max-width: 390px;
