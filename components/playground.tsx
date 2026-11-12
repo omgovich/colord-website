@@ -314,14 +314,16 @@ function LibraryOperation({
       >
         <GripVertical size={19} />
       </button>
-      <span className="library-operation-name">{meta.label}</span>
       <button
         type="button"
-        className="round-action"
+        className="library-add"
         aria-label={`Add ${meta.label}`}
         onClick={onAdd}
       >
-        <Plus size={18} />
+        <span className="library-operation-name">{meta.label}</span>
+        <span className="round-action" aria-hidden="true">
+          <Plus size={18} />
+        </span>
       </button>
     </div>
   );
@@ -389,7 +391,6 @@ function InsertSlot({
       className={`insert-slot ${active ? "drop-ready" : ""} ${opening ? "is-opening" : ""}`}
       style={{ height: opening ? height + 64 : 32 }}
     >
-      <span className="connection-line" />
       <button
         className="insert-point"
         type="button"
@@ -448,6 +449,7 @@ function AmountSlider({
       }),
     [before, step.kind, step.color, step.space],
   );
+  const thumbColor = runChain(before, [step]).toHex();
   return (
     <div
       className={`slider-control ${signed ? "is-signed" : ""} ${step.kind === "opacity" ? "alpha-track" : ""}`}
@@ -455,7 +457,12 @@ function AmountSlider({
       <label className="sr-only" htmlFor={id}>
         {meta.label} amount
       </label>
-      <div className="range-wrap" style={{ "--track": track } as CSSProperties}>
+      <div
+        className="range-wrap"
+        style={
+          { "--track": track, "--thumb-color": thumbColor } as CSSProperties
+        }
+      >
         <input
           id={id}
           type="range"
@@ -512,11 +519,7 @@ function StepCard({
     >
       <motion.article
         layout={reduced || isDragging || landed ? false : "position"}
-        initial={{
-          opacity: landed ? 1 : 0,
-          y: reduced || landed ? 0 : 16,
-          scale: reduced || landed ? 1 : 0.97,
-        }}
+        initial={false}
         animate={{ opacity: 1, y: 0, scale: 1 }}
         exit={{ opacity: 0, scale: reduced ? 1 : 0.95 }}
         transition={{ duration: 0.28, ease }}
@@ -1118,114 +1121,116 @@ export default function Playground() {
                 </p>
               )}
             </div>
-            <SortableContext
-              items={steps.map((s) => s.id)}
-              strategy={verticalListSortingStrategy}
-            >
-              <AnimatePresence initial={false}>
-                {steps.map((step, index) => (
-                  <motion.div
-                    layout={
-                      reduced || liftedId === step.id || landedId === step.id
-                        ? false
-                        : "position"
-                    }
-                    key={step.id}
-                    className="flow-item"
-                    style={{
-                      height: liftedId === step.id ? 0 : undefined,
-                      overflow: liftedId === step.id ? "hidden" : undefined,
-                    }}
-                    exit={{ opacity: 0, scale: 0.96 }}
-                    transition={{ duration: 0.22, ease }}
-                  >
-                    <InsertSlot
-                      index={index}
-                      active={!!dragKind}
-                      opening={!!dragKind && dragTarget === index}
-                      kind={dragKind}
-                      height={dragHeight}
-                      menuProps={blockTriggerProps(
-                        `${inputId}-insert-${index}`,
-                        index,
-                      )}
-                    />
-                    <StepCard
-                      step={step}
-                      index={index}
-                      before={beforeColors[index]}
-                      landed={landedId === step.id}
-                      onUpdate={(patch) =>
-                        setSteps((current) =>
-                          current.map((s) =>
-                            s.id === step.id ? { ...s, ...patch } : s,
-                          ),
-                        )
+            <div className="chain-spine">
+              <SortableContext
+                items={steps.map((s) => s.id)}
+                strategy={verticalListSortingStrategy}
+              >
+                <AnimatePresence initial={false}>
+                  {steps.map((step, index) => (
+                    <motion.div
+                      layout={
+                        reduced || liftedId === step.id || landedId === step.id
+                          ? false
+                          : "position"
                       }
-                      onRemove={() => {
-                        const removed = document.querySelector(
-                          `[data-step-id="${step.id}"]`,
-                        );
-                        if (removed?.contains(document.activeElement)) {
-                          const neighbor = steps[index + 1] ?? steps[index - 1];
-                          const target = neighbor
-                            ? document.querySelector<HTMLButtonElement>(
-                                `[data-step-id="${neighbor.id}"] .step-grip`,
-                              )
-                            : document.getElementById(`${inputId}-add`);
-                          target?.focus({ preventScroll: true });
-                        }
-                        setSteps((current) =>
-                          current.filter((s) => s.id !== step.id),
-                        );
-                        setAnnouncement(
-                          `${OPERATION_META[step.kind].label} removed.`,
-                        );
+                      key={step.id}
+                      className="flow-item"
+                      style={{
+                        height: liftedId === step.id ? 0 : undefined,
+                        overflow: liftedId === step.id ? "hidden" : undefined,
                       }}
-                    />
-                  </motion.div>
-                ))}
-              </AnimatePresence>
-            </SortableContext>
-            <InsertSlot
-              index={steps.length}
-              active={!!dragKind}
-              opening={!!dragKind && dragTarget === steps.length}
-              kind={dragKind}
-              height={dragHeight}
-              menuProps={blockTriggerProps(
-                `${inputId}-insert-${steps.length}`,
-                steps.length,
-              )}
-            />
-            <div className="chain-actions">
-              <button
-                className="add-block-button"
-                {...blockTriggerProps(`${inputId}-add`)}
-              >
-                <Plus size={16} />
-                Add a block
-              </button>
-              <button
-                className="reset-chain icon-button"
-                aria-label="Reset playground"
-                title="Reset playground"
-                onClick={reset}
-              >
-                <RotateCcw size={15} />
-              </button>
-            </div>
-            <div className="plain-connector">
-              <span />
-            </div>
-            <OutputBlock
-              settings={output}
-              onChange={(patch) =>
-                setOutput((current) => ({ ...current, ...patch }))
-              }
-            />
-            <div className="plain-connector result-connector">
-              <span />
+                      exit={{ opacity: 0, scale: 0.96 }}
+                      transition={{ duration: 0.22, ease }}
+                    >
+                      <InsertSlot
+                        index={index}
+                        active={!!dragKind}
+                        opening={!!dragKind && dragTarget === index}
+                        kind={dragKind}
+                        height={dragHeight}
+                        menuProps={blockTriggerProps(
+                          `${inputId}-insert-${index}`,
+                          index,
+                        )}
+                      />
+                      <StepCard
+                        step={step}
+                        index={index}
+                        before={beforeColors[index]}
+                        landed={landedId === step.id}
+                        onUpdate={(patch) =>
+                          setSteps((current) =>
+                            current.map((s) =>
+                              s.id === step.id ? { ...s, ...patch } : s,
+                            ),
+                          )
+                        }
+                        onRemove={() => {
+                          const removed = document.querySelector(
+                            `[data-step-id="${step.id}"]`,
+                          );
+                          if (removed?.contains(document.activeElement)) {
+                            const neighbor =
+                              steps[index + 1] ?? steps[index - 1];
+                            const target = neighbor
+                              ? document.querySelector<HTMLButtonElement>(
+                                  `[data-step-id="${neighbor.id}"] .step-grip`,
+                                )
+                              : document.getElementById(`${inputId}-add`);
+                            target?.focus({ preventScroll: true });
+                          }
+                          setSteps((current) =>
+                            current.filter((s) => s.id !== step.id),
+                          );
+                          setAnnouncement(
+                            `${OPERATION_META[step.kind].label} removed.`,
+                          );
+                        }}
+                      />
+                    </motion.div>
+                  ))}
+                </AnimatePresence>
+              </SortableContext>
+              <InsertSlot
+                index={steps.length}
+                active={!!dragKind}
+                opening={!!dragKind && dragTarget === steps.length}
+                kind={dragKind}
+                height={dragHeight}
+                menuProps={blockTriggerProps(
+                  `${inputId}-insert-${steps.length}`,
+                  steps.length,
+                )}
+              />
+              <div className="chain-actions">
+                <button
+                  className="add-block-button"
+                  {...blockTriggerProps(`${inputId}-add`)}
+                >
+                  <Plus size={16} />
+                  Add a block
+                </button>
+                <button
+                  className="reset-chain icon-button"
+                  aria-label="Reset playground"
+                  title="Reset playground"
+                  onClick={reset}
+                >
+                  <RotateCcw size={15} />
+                </button>
+              </div>
+              <div className="plain-connector" aria-hidden="true" />
+              <OutputBlock
+                settings={output}
+                onChange={(patch) =>
+                  setOutput((current) => ({ ...current, ...patch }))
+                }
+              />
+              <div
+                className="plain-connector result-connector"
+                aria-hidden="true"
+              />
             </div>
             <ResultView result={result} settings={output} />
             <section className="code-panel" aria-label="Generated code">

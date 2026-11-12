@@ -10,6 +10,7 @@ import "@fontsource/dm-mono/500.css";
 import "./globals.css";
 import "../components/site-shell.css";
 import "../components/scene-light.css";
+import "../components/site-entrance.css";
 export const metadata: Metadata = {
   metadataBase: new URL("https://colord.dev"),
   applicationName: "colord",

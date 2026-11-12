@@ -1,0 +1,122 @@
+.site-entrance {
+  display: contents;
+}
+
+.site-entering
+  :is(
+    .shell-header-identity,
+    .shell-header-nav,
+    .mobile-blocks-toolbar,
+    .source-color,
+    .library-heading,
+    .library-operation,
+    .output-choice,
+    .sortable-step,
+    .chain-actions,
+    .output-block,
+    .result-view,
+    .code-panel
+  ) {
+  animation: site-arrive 520ms cubic-bezier(0.22, 1, 0.36, 1)
+    var(--entrance-delay, 0ms) both;
+}
+
+.site-entering .shell-header-nav {
+  --entrance-delay: 60ms;
+}
+.site-entering .mobile-blocks-toolbar {
+  --entrance-delay: 100ms;
+}
+.site-entering .source-color {
+  --entrance-delay: 120ms;
+  --entrance-y: -24px;
+}
+.site-entering .library-heading {
+  --entrance-delay: 180ms;
+}
+
+.site-entering .library-list > :nth-child(1) {
+  --entrance-delay: 220ms;
+}
+.site-entering .library-list > :nth-child(2) {
+  --entrance-delay: 255ms;
+}
+.site-entering .library-list > :nth-child(3) {
+  --entrance-delay: 290ms;
+}
+.site-entering .library-list > :nth-child(4) {
+  --entrance-delay: 325ms;
+}
+.site-entering .library-list > :nth-child(5) {
+  --entrance-delay: 360ms;
+}
+.site-entering .library-list > :nth-child(6) {
+  --entrance-delay: 395ms;
+}
+.site-entering .library-list > :nth-child(7) {
+  --entrance-delay: 430ms;
+}
+.site-entering .library-list > :nth-child(8) {
+  --entrance-delay: 465ms;
+}
+
+.site-entering .flow-item:nth-child(1 of .flow-item) {
+  --entrance-delay: 240ms;
+}
+.site-entering .flow-item:nth-child(2 of .flow-item) {
+  --entrance-delay: 315ms;
+}
+.site-entering .flow-item:nth-child(3 of .flow-item) {
+  --entrance-delay: 390ms;
+}
+.site-entering .flow-item:nth-child(4 of .flow-item) {
+  --entrance-delay: 465ms;
+}
+.site-entering .chain-actions {
+  --entrance-delay: 540ms;
+}
+.site-entering .output-block {
+  --entrance-delay: 590ms;
+}
+.site-entering .result-view {
+  --entrance-delay: 640ms;
+}
+.site-entering .code-panel {
+  --entrance-delay: 690ms;
+}
+
+.site-entering .insert-point {
+  animation: site-arrive 520ms cubic-bezier(0.22, 1, 0.36, 1)
+    var(--entrance-delay, 540ms) both;
+}
+
+.site-entering .chain-spine::before {
+  animation: site-connect 420ms ease-out 240ms both;
+}
+
+@keyframes site-connect {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes site-arrive {
+  0% {
+    opacity: 0;
+    translate: 0 var(--entrance-y, -18px);
+  }
+  100% {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .site-entering *,
+  .site-entering .chain-spine::before {
+    animation: none !important;
+  }
+}

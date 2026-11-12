@@ -297,7 +297,23 @@ svg {
 .library-operation-name {
   flex: 1;
 }
+.library-add {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 10px 0 46px;
+  border-radius: inherit;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  letter-spacing: inherit;
+  text-align: left;
+}
 .library-grip {
+  position: relative;
+  z-index: 1;
   width: 28px;
   height: 32px;
   display: grid;
@@ -332,11 +348,13 @@ svg {
   display: grid;
   place-items: center;
 }
-.round-action:hover {
+.round-action:hover,
+.library-add:is(:hover, :focus-visible) .round-action {
   background: #ffffff88;
   transform: rotate(8deg);
 }
-.round-action:active {
+.round-action:active,
+.library-add:active .round-action {
   transform: scale(0.88);
 }
 .output-choice {
@@ -430,6 +448,32 @@ svg {
   min-width: 0;
   width: 100%;
   max-width: 480px;
+}
+.chain-spine {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  min-width: 0;
+}
+.chain-spine .glass {
+  background-color: var(--paper);
+}
+.chain-spine::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: calc(50% - 1px);
+  width: 2px;
+  background: #86658f44;
+  pointer-events: none;
+  z-index: -1;
+}
+.is-dragging .chain-spine::before {
+  opacity: 0.35;
 }
 .source-color {
   display: flex;
@@ -549,15 +593,6 @@ svg {
   isolation: isolate;
   border-radius: 10px;
 }
-.connection-line {
-  height: 100%;
-  width: 2px;
-  background: #86658f44;
-  position: absolute;
-  left: calc(50% - 1px);
-  top: 0;
-  z-index: -1;
-}
 .insert-point {
   width: 14px;
   height: 14px;
@@ -592,9 +627,6 @@ svg {
   opacity: 0;
   transform: scale(0.5);
   pointer-events: none;
-}
-.drop-ready .connection-line {
-  opacity: 0.35;
 }
 .landing-pocket {
   position: absolute;
@@ -799,7 +831,10 @@ svg {
   border: 1.5px solid #fff;
   border-radius: 50%;
   margin-top: -6px;
-  background: linear-gradient(#fff4ff, #fff 50%, #e9ddf5);
+  background:
+    radial-gradient(ellipse at 35% 22%, #ffffff70, #ffffff00 65%),
+    linear-gradient(var(--thumb-color), var(--thumb-color)),
+    repeating-conic-gradient(#f5eef9 0 25%, #d7cddd 0 50%) 50% / 6px 6px;
   box-shadow:
     inset 0 -2px 3px #8c6caa44,
     0 2px 4px #57336844;
@@ -812,7 +847,10 @@ svg {
   height: 20px;
   border: 1.5px solid #fff;
   border-radius: 50%;
-  background: linear-gradient(#fff4ff, #fff 50%, #e9ddf5);
+  background:
+    radial-gradient(ellipse at 35% 22%, #ffffff70, #ffffff00 65%),
+    linear-gradient(var(--thumb-color), var(--thumb-color)),
+    repeating-conic-gradient(#f5eef9 0 25%, #d7cddd 0 50%) 50% / 6px 6px;
   box-shadow:
     inset 0 -2px 3px #8c6caa44,
     0 2px 4px #57336844;
@@ -981,7 +1019,7 @@ svg {
   gap: 9px;
   height: 36px;
   padding: 0 18px;
-  background: #ffffff66;
+  background: #fcfbff;
   border: 1px solid #ffffffaa;
   border-radius: 30px;
   font-size: 11px;
@@ -1010,11 +1048,6 @@ svg {
   height: 28px;
   display: flex;
   justify-content: center;
-}
-.plain-connector > span {
-  height: 100%;
-  width: 2px;
-  background: #86658f44;
 }
 .output-block {
   scroll-margin-block: 24px;
