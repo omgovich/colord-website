@@ -54,14 +54,7 @@ import {
   motion,
   useReducedMotion,
 } from "motion/react";
-import {
-  Check,
-  Dices,
-  GripVertical,
-  Plus,
-  RotateCcw,
-  X,
-} from "lucide-react";
+import { Check, Dices, GripVertical, Plus, X } from "lucide-react";
 import { CopyButton } from "./ui";
 import { ColorPicker, NativeSelect, ParameterColor } from "./color-controls";
 import { OutputBlock, ResultView } from "./output-block";
@@ -373,6 +366,7 @@ function InsertSlot({
   kind,
   height,
   menuProps,
+  large = false,
 }: {
   index: number;
   active: boolean;
@@ -380,24 +374,27 @@ function InsertSlot({
   kind: OperationKind | null;
   height: number;
   menuProps: ButtonHTMLAttributes<HTMLButtonElement>;
+  large?: boolean;
 }) {
   const { setNodeRef } = useDroppable({ id: `slot-${index}`, data: { index } });
   const reduced = useReducedMotion();
   return (
     <div
       ref={setNodeRef}
-      className={`insert-slot ${active ? "drop-ready" : ""} ${opening ? "is-opening" : ""}`}
+      className={`insert-slot ${large ? "insert-slot-large" : ""} ${active ? "drop-ready" : ""} ${opening ? "is-opening" : ""}`}
       style={{ height: opening ? height + 64 : 32 }}
     >
-      <button
-        className="insert-point"
-        type="button"
-        aria-label={`Insert a color block at position ${index + 1}`}
-        {...menuProps}
-      >
-        <Plus size={10} />
-        <span className="insert-point-label">Add block</span>
-      </button>
+      <div className="insert-controls">
+        <button
+          className="insert-point"
+          type="button"
+          aria-label={`Insert a color block at position ${index + 1}`}
+          {...menuProps}
+        >
+          <Plus size={10} />
+          <span className="insert-point-label">Add block</span>
+        </button>
+      </div>
       <AnimatePresence>
         {opening && kind && (
           <motion.div
@@ -923,12 +920,6 @@ export default function Playground() {
     });
     setAnnouncement("Color blocks reordered.");
   };
-  const reset = () => {
-    setSteps(DEFAULT_STEPS.map((s) => ({ ...s })));
-    setOutput({ ...DEFAULT_OUTPUT });
-    changeSource("#ff5c7a");
-    setAnnouncement("Playground reset.");
-  };
   return (
     <MotionConfig reducedMotion="user">
       <DndContext
@@ -1183,32 +1174,13 @@ export default function Playground() {
               </SortableContext>
               <InsertSlot
                 index={steps.length}
+                large
                 active={!!dragKind}
                 opening={!!dragKind && dragTarget === steps.length}
                 kind={dragKind}
                 height={dragHeight}
-                menuProps={blockTriggerProps(
-                  `${inputId}-insert-${steps.length}`,
-                  steps.length,
-                )}
+                menuProps={blockTriggerProps(`${inputId}-add`, steps.length)}
               />
-              <div className="chain-actions">
-                <button
-                  className="add-block-button"
-                  {...blockTriggerProps(`${inputId}-add`)}
-                >
-                  <Plus size={16} />
-                  Add a block
-                </button>
-                <button
-                  className="reset-chain icon-button"
-                  aria-label="Reset playground"
-                  title="Reset playground"
-                  onClick={reset}
-                >
-                  <RotateCcw size={15} />
-                </button>
-              </div>
               <div className="plain-connector" aria-hidden="true" />
               <OutputBlock
                 settings={output}

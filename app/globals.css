@@ -593,18 +593,25 @@ svg {
   isolation: isolate;
   border-radius: 10px;
 }
-.insert-point {
-  width: 14px;
-  height: 14px;
-  display: grid;
-  place-items: center;
-  flex-shrink: 0;
-  padding: 0;
-  background: #f7e6f5;
-  color: #86658f;
-  border: 1px solid #86658f66;
-  border-radius: 50%;
+.insert-controls {
   position: relative;
+}
+.insert-slot-large {
+  min-height: 64px;
+}
+.insert-point {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  height: 40px;
+  padding: 0 13px;
+  background: #fcf8ff;
+  color: #86658f;
+  border: 1px solid #d9c9e2;
+  border-radius: 22px;
+  box-shadow: 0 2px 8px #80678c0a;
   transition:
     transform 0.18s var(--ease),
     background 0.18s,
@@ -613,17 +620,49 @@ svg {
 .insert-point::before {
   content: "";
   position: absolute;
-  inset: -10px;
-  border-radius: 50%;
+  inset: -2px;
+  border-radius: inherit;
+}
+.insert-point > svg {
+  width: 17px;
+  height: 17px;
 }
 .insert-point-label {
-  display: none;
+  font-size: 12px;
+  font-weight: 500;
 }
 .insert-point:hover,
 .insert-point:focus-visible {
-  transform: scale(1.45);
+  transform: scale(1.04);
   background: #fff4ff;
   box-shadow: 0 2px 10px #9d6daf22;
+}
+@media (min-width: 1051px) {
+  .insert-slot:not(.insert-slot-large) .insert-point {
+    width: 14px;
+    height: 14px;
+    padding: 0;
+    background: #f7e6f5;
+    border-color: #86658f66;
+    border-radius: 50%;
+    box-shadow: none;
+  }
+  .insert-slot:not(.insert-slot-large) .insert-point::before {
+    inset: -10px;
+  }
+  .insert-slot:not(.insert-slot-large) .insert-point > svg {
+    width: 10px;
+    height: 10px;
+  }
+  .insert-slot:not(.insert-slot-large) .insert-point-label {
+    display: none;
+  }
+  .insert-slot:not(.insert-slot-large)
+    .insert-point:is(:hover, :focus-visible) {
+    transform: scale(1.45);
+    background: #fff4ff;
+    box-shadow: 0 2px 10px #9d6daf22;
+  }
 }
 /* The chain opens a soft pocket instead of drawing a drop zone. */
 .drop-ready .insert-point {
@@ -1008,43 +1047,6 @@ svg {
   transition:
     transform 0.15s var(--ease),
     box-shadow 0.15s var(--ease);
-}
-.chain-actions {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  position: relative;
-}
-.add-block-button {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 9px;
-  height: 36px;
-  padding: 0 18px;
-  background: #fcfbff;
-  border: 1px solid #ffffffaa;
-  border-radius: 30px;
-  font-size: 11px;
-  color: #86658f;
-  transition:
-    background 0.2s,
-    transform 0.2s var(--ease),
-    box-shadow 0.2s;
-}
-.add-block-button:hover {
-  background: #fff;
-  box-shadow: 0 4px 12px #8e65a814;
-  transform: translateY(-1px);
-}
-.reset-chain {
-  position: absolute;
-  left: calc(100% + 8px);
-  color: #927a9d;
-  opacity: 0.65;
-}
-.reset-chain:hover {
-  opacity: 1;
 }
 .plain-connector {
   width: 100%;
@@ -1540,35 +1542,6 @@ svg {
   }
   .insert-slot {
     min-height: 64px;
-  }
-  .insert-point {
-    display: flex;
-    justify-content: center;
-    gap: 6px;
-    width: auto;
-    height: 40px;
-    padding: 0 13px;
-    border-radius: 22px;
-    border-color: #d9c9e2;
-    background: #fcf8ff;
-    box-shadow: 0 2px 8px #80678c0a;
-  }
-  .insert-point::before {
-    inset: -2px;
-    border-radius: inherit;
-  }
-  .insert-point > svg {
-    width: 17px;
-    height: 17px;
-  }
-  .insert-point-label {
-    display: inline;
-    font-size: 12px;
-    font-weight: 500;
-  }
-  .insert-point:hover,
-  .insert-point:focus-visible {
-    transform: scale(1.04);
   }
   .right-rail {
     position: static;
