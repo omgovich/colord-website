@@ -5,6 +5,7 @@ import { colord } from "colord";
 import {
   COLOR_FORMATS,
   DEFAULT_OUTPUT,
+  DEFAULT_INPUT,
   DEFAULT_STEPS,
   HARMONY_TYPES,
   createStep,
@@ -47,7 +48,7 @@ function executeExample(code: string): unknown {
 test("the design's complete chain computes the displayed result without mutating its source", () => {
   const steps = structuredClone(DEFAULT_STEPS);
   const original = structuredClone(steps);
-  assert.equal(runChain("#ff5c7a", steps).toHex(), "#ee8822");
+  assert.equal(runChain(DEFAULT_INPUT, steps).toHex(), "#ee9933");
   assert.deepEqual(steps, original);
   assert.equal(runChain("#ff5c7a", []).toHex(), "#ff5c7a");
 });
@@ -59,12 +60,18 @@ test("slider previews match signed zero, clipping, relative hue, mixing space an
   const lightness = samples(step("lightness", 0));
   assert.equal(lightness[0], "#000000");
   assert.equal(lightness[100], input);
-  assert.equal(lightness[108], colord(input).lighten(0.08).toHex());
+  assert.equal(
+    lightness[108],
+    colord(input).lighten(0.08, { relative: true }).toHex(),
+  );
   assert.equal(lightness[200], "#ffffff");
   const saturation = samples(step("saturation", 0));
   assert.equal(saturation[0], colord(input).grayscale().toHex());
   assert.equal(saturation[100], input);
-  assert.equal(saturation[200], colord(input).saturate(1).toHex());
+  assert.equal(
+    saturation[200],
+    colord(input).saturate(1, { relative: true }).toHex(),
+  );
   const hue = samples(step("hue", 0));
   assert.equal(hue[180], input);
   assert.equal(hue[210], colord(input).rotate(30).toHex());
@@ -77,7 +84,7 @@ test("slider previews match signed zero, clipping, relative hue, mixing space an
     afterPrevious[205],
     runChain(input, [step("lightness", 8), step("hue", 25)]).toHex(),
   );
-  assert.equal(afterPrevious[205], "#ffa185");
+  assert.equal(afterPrevious[205], "#ff9778");
   const lab = samples(step("mix", 0, "#7955f6", "lab"));
   const rgb = samples(step("mix", 0, "#7955f6", "rgb"));
   assert.equal(lab[0], input);
@@ -98,13 +105,60 @@ test("negative signed controls use positive darken/desaturate calls in the copie
   const result = runChain("#ff5c7a", steps).toHex();
   assert.equal(
     result,
-    colord("#ff5c7a").darken(0.08).desaturate(0.2).rotate(-90).toHex(),
+    colord("#ff5c7a")
+      .darken(0.08, { relative: true })
+      .desaturate(0.2, { relative: true })
+      .rotate(-90)
+      .toHex(),
   );
   const code = generateCode("#ff5c7a", steps, DEFAULT_OUTPUT);
-  assert.match(code, /\.darken\(0\.08\)/);
-  assert.match(code, /\.desaturate\(0\.2\)/);
+  assert.match(code, /\.darken\(0\.08, \{ relative: true \}\)/);
+  assert.match(code, /\.desaturate\(0\.2, \{ relative: true \}\)/);
   assert.doesNotMatch(code, /\.(lighten|saturate)\(-/);
   assert.equal(executeExample(code), result);
+});
+
+test("lightness and saturation scale the current channel by default", () => {
+  const input = "hsl(30, 40%, 30%)";
+  for (const [kind, value, channel, expected] of [
+    ["lightness", 50, "l", 45],
+    ["lightness", -50, "l", 15],
+    ["saturation", 50, "s", 60],
+    ["saturation", -50, "s", 20],
+  ] as const) {
+    const steps = [step(kind, value)];
+    const result = runChain(input, steps);
+    assert.equal(result.toHsl()[channel], expected);
+    assert.equal(
+      executeExample(generateCode(input, steps, DEFAULT_OUTPUT)),
+      result.toHex(),
+    );
+  }
+  assert.equal(runChain("#000", [step("lightness", 100)]).toHex(), "#000000");
+  assert.equal(runChain("#888", [step("saturation", 100)]).toHex(), "#888888");
+  const track = getOperationGradient(input, step("lightness", 0)).match(
+    /#[0-9a-f]+/g,
+  )!;
+  assert.equal(track[200], colord("hsl(30, 40%, 60%)").toHex());
+});
+
+test("relative can be disabled independently for each lightness and saturation block", () => {
+  const input = "hsl(30, 40%, 30%)";
+  for (const [kind, value, channel, expected] of [
+    ["lightness", 20, "l", 50],
+    ["lightness", -20, "l", 10],
+    ["saturation", 20, "s", 60],
+    ["saturation", -20, "s", 20],
+  ] as const) {
+    const operation = { ...step(kind, value), relative: false };
+    const result = runChain(input, [operation]);
+    assert.equal(result.toHsl()[channel], expected);
+    const code = generateCode(input, [operation], DEFAULT_OUTPUT);
+    assert.match(code, /relative: false/);
+    assert.equal(executeExample(code), result.toHex());
+    const stops = getOperationGradient(input, operation).match(/#[0-9a-f]+/g)!;
+    assert.equal(stops[value + 100], result.toHex());
+  }
 });
 
 test("all transform types and mixing spaces produce executable, matching examples", () => {
@@ -249,8 +303,8 @@ test("Contrast, Difference and Readability expose real library outputs", () => {
 test("Minify has no option controls or arguments and preserves transparent colors", () => {
   const output = settings({ kind: "minify" });
   assert.equal(
-    evaluateOutput(runChain("#ff5c7a", DEFAULT_STEPS), output).value,
-    "#e82",
+    evaluateOutput(runChain(DEFAULT_INPUT, DEFAULT_STEPS), output).value,
+    "#e93",
   );
   for (const input of ["#ff0000", "#12345680", "transparent"]) {
     const result = evaluateOutput(runChain(input, []), output);
@@ -267,7 +321,7 @@ test("Info uses a single chain variable and independent method calls", () => {
   const result = evaluateOutput(runChain("#ff5c7a", DEFAULT_STEPS), output);
   assert.deepEqual(result, {
     type: "info",
-    value: { brightness: 0.61, luminance: 0.36, isLight: true },
+    value: { brightness: 0.64, luminance: 0.39, isLight: true },
   });
   const code = generateCode("#ff5c7a", DEFAULT_STEPS, output);
   assert.equal((code.match(/colord\("/g) ?? []).length, 1);

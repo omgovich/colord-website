@@ -61,6 +61,7 @@ import { OutputBlock, ResultView } from "./output-block";
 import {
   DEFAULT_OUTPUT,
   DEFAULT_STEPS,
+  DEFAULT_INPUT,
   OPERATION_META,
   OUTPUT_META,
   createStep,
@@ -442,8 +443,9 @@ function AmountSlider({
         kind: step.kind,
         color: step.color,
         space: step.space,
+        relative: step.relative,
       }),
-    [before, step.kind, step.color, step.space],
+    [before, step.kind, step.color, step.space, step.relative],
   );
   const thumbColor = runChain(before, [step]).toHex();
   return (
@@ -549,6 +551,16 @@ function StepCard({
             <X size={16} />
           </button>
         </div>
+        {(step.kind === "lightness" || step.kind === "saturation") && (
+          <label className="relative-toggle">
+            <input
+              type="checkbox"
+              checked={step.relative ?? true}
+              onChange={(event) => onUpdate({ relative: event.target.checked })}
+            />
+            Relative
+          </label>
+        )}
         {step.kind === "mix" && (
           <div className="mix-parameters">
             <ParameterColor
@@ -667,8 +679,8 @@ const collisionDetection: CollisionDetection = (args) => {
 };
 
 export default function Playground() {
-  const [input, setInput] = useState("#ff5c7a"),
-    [draft, setDraft] = useState("#ff5c7a");
+  const [input, setInput] = useState(DEFAULT_INPUT),
+    [draft, setDraft] = useState(DEFAULT_INPUT);
   const [steps, setSteps] = useState<Step[]>(DEFAULT_STEPS),
     [output, setOutput] = useState<OutputSettings>(DEFAULT_OUTPUT);
   const [dragKind, setDragKind] = useState<OperationKind | null>(null),

@@ -64,6 +64,7 @@ export interface Step {
   value: number;
   color: string;
   space: MixingSpace;
+  relative?: boolean;
 }
 export interface OutputSettings {
   kind: OutputKind;
@@ -215,6 +216,7 @@ export function createStep(kind: OperationKind): Step {
     space: "lab",
   };
 }
+export const DEFAULT_INPUT = "#ff6880";
 export const DEFAULT_STEPS: Step[] = [
   { id: "hue-1", kind: "hue", value: 20, color: "#7955f6", space: "lab" },
   {
@@ -287,12 +289,14 @@ export function runChain(input: string | Colord, steps: Step[]): Colord {
       switch (step.kind) {
         case "lightness":
           return value < 0
-            ? color.darken(-value / 100)
-            : color.lighten(value / 100);
+            ? color.darken(-value / 100, { relative: step.relative ?? true })
+            : color.lighten(value / 100, { relative: step.relative ?? true });
         case "saturation":
           return value < 0
-            ? color.desaturate(-value / 100)
-            : color.saturate(value / 100);
+            ? color.desaturate(-value / 100, {
+                relative: step.relative ?? true,
+              })
+            : color.saturate(value / 100, { relative: step.relative ?? true });
         case "hue":
           return color.rotate(value);
         case "mix":
@@ -316,7 +320,7 @@ export function runChain(input: string | Colord, steps: Step[]): Colord {
 /** Sample every selectable value, including clamped plateaus and LAB mixing. */
 export function getOperationGradient(
   input: string | Colord,
-  operation: Pick<Step, "kind" | "color" | "space">,
+  operation: Pick<Step, "kind" | "color" | "space" | "relative">,
 ): string {
   const { min, max, step } = OPERATION_META[operation.kind];
   const intervals = Math.max(1, (max - min) / (step || 1));
@@ -478,9 +482,9 @@ function stepCode(step: Step): string {
   const value = amount(step);
   switch (step.kind) {
     case "lightness":
-      return `.${value < 0 ? "darken" : "lighten"}(${numeric(Math.abs(value) / 100)})`;
+      return `.${value < 0 ? "darken" : "lighten"}(${numeric(Math.abs(value) / 100)}, { relative: ${step.relative ?? true} })`;
     case "saturation":
-      return `.${value < 0 ? "desaturate" : "saturate"}(${numeric(Math.abs(value) / 100)})`;
+      return `.${value < 0 ? "desaturate" : "saturate"}(${numeric(Math.abs(value) / 100)}, { relative: ${step.relative ?? true} })`;
     case "hue":
       return `.rotate(${numeric(value)})`;
     case "mix":
