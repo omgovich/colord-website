@@ -54,7 +54,7 @@ import {
   motion,
   useReducedMotion,
 } from "motion/react";
-import { Check, Dices, GripVertical, Plus, X } from "lucide-react";
+import { ArrowDown, Check, Dices, GripVertical, Plus, X } from "lucide-react";
 import { CopyButton } from "./ui";
 import { ColorPicker, NativeSelect, ParameterColor } from "./color-controls";
 import { OutputBlock, ResultView } from "./output-block";
@@ -320,42 +320,92 @@ function LibraryOperation({
     </div>
   );
 }
+function MiniResult({ result }: { result: ReturnType<typeof evaluateOutput> }) {
+  if (result.type === "color")
+    return (
+      <>
+        <span className="mini-color" style={{ background: result.color }} />
+        <code>
+          {typeof result.value === "object"
+            ? JSON.stringify(result.value)
+            : String(result.value)}
+        </code>
+      </>
+    );
+  if (result.type === "palette")
+    return (
+      <span className="mini-palette">
+        {result.colors.map((color, index) => (
+          <span
+            key={`${index}-${color}`}
+            style={{ background: color }}
+            title={color}
+          />
+        ))}
+      </span>
+    );
+  if (result.type === "info")
+    return (
+      <span
+        title={`Brightness ${result.value.brightness}; luminance ${result.value.luminance}`}
+      >
+        {result.value.isLight ? "Light" : "Dark"}
+      </span>
+    );
+  if (result.type === "boolean")
+    return (
+      <span>
+        {result.value ? "Passes" : "Doesn’t pass"} · {result.contrast}:1
+      </span>
+    );
+  return (
+    <code>
+      {String(result.value)}
+      {result.type === "number" && result.unit === "contrast" ? ":1" : ""}
+    </code>
+  );
+}
+
 function OutputLibrary({
-  selected,
-  onSelect,
+  settings,
+  result,
+  onChange,
 }: {
-  selected: OutputKind;
-  onSelect: (kind: OutputKind) => void;
+  settings: OutputSettings;
+  result: ReturnType<typeof evaluateOutput>;
+  onChange: (patch: Partial<OutputSettings>) => void;
 }) {
   return (
     <div className="output-library">
-      <h2 className="library-heading">Output blocks</h2>
+      <h2 className="library-heading">Output</h2>
       <div className="library-list">
-        {outputKinds.map((kind) => (
-          <button
-            type="button"
-            key={kind}
-            className={`output-choice glass material-${OUTPUT_META[kind].material} ${selected === kind ? "is-selected" : ""}`}
-            aria-pressed={selected === kind}
-            onClick={() => onSelect(kind)}
-          >
-            <span>{OUTPUT_META[kind].label}</span>
-            <AnimatePresence initial={false}>
-              {selected === kind && (
-                <motion.span
-                  className="round-action"
-                  aria-hidden="true"
-                  initial={{ opacity: 0, scale: 0.7 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.7 }}
-                  transition={{ duration: 0.15 }}
-                >
-                  <Check size={17} />
-                </motion.span>
+        {outputKinds.map((kind) => {
+          const selected = settings.kind === kind;
+          return (
+            <button
+              type="button"
+              key={kind}
+              className={`output-choice output-preview-row glass material-${OUTPUT_META[kind].material} ${selected ? "is-selected" : ""}`}
+              aria-pressed={selected}
+              aria-label={OUTPUT_META[kind].label}
+              onClick={() => onChange({ kind })}
+            >
+              <span className="output-choice-name">
+                {OUTPUT_META[kind].label}
+              </span>
+              {selected && (
+                <>
+                  <span className="output-mini-preview">
+                    <MiniResult result={result} />
+                  </span>
+                  <span className="round-action" aria-hidden="true">
+                    <Check size={16} />
+                  </span>
+                </>
               )}
-            </AnimatePresence>
-          </button>
-        ))}
+            </button>
+          );
+        })}
       </div>
     </div>
   );
@@ -693,6 +743,9 @@ export default function Playground() {
   );
   const operationsRail = useRef<HTMLElement>(null);
   const outputRail = useRef<HTMLElement>(null);
+  const workspaceRef = useRef<HTMLElement>(null);
+  const resultRef = useRef<HTMLElement>(null);
+  const [showMobileResult, setShowMobileResult] = useState(false);
   const pendingReveal = useRef<string | null>(null);
   const menuItems = useRef<(HTMLButtonElement | null)[]>([]);
   const [activeMenuItem, setActiveMenuItem] = useState<number | null>(null);
@@ -753,6 +806,34 @@ export default function Playground() {
     setHydrated(true);
   }, []);
   const finalColor = useMemo(() => runChain(input, steps), [input, steps]);
+  useEffect(() => {
+    const workspace = workspaceRef.current;
+    const result = resultRef.current;
+    if (!workspace || !result) return;
+    let frame = 0;
+    const update = () => {
+      frame = 0;
+      const bounds = workspace.getBoundingClientRect();
+      const inPlayground = bounds.bottom > 0 && bounds.top < innerHeight;
+      setShowMobileResult(
+        inPlayground && result.getBoundingClientRect().top >= innerHeight,
+      );
+    };
+    const schedule = () => {
+      if (!frame) frame = requestAnimationFrame(update);
+    };
+    const observer = new ResizeObserver(schedule);
+    observer.observe(workspace);
+    window.addEventListener("scroll", schedule, { passive: true });
+    window.addEventListener("resize", schedule);
+    schedule();
+    return () => {
+      observer.disconnect();
+      window.removeEventListener("scroll", schedule);
+      window.removeEventListener("resize", schedule);
+      cancelAnimationFrame(frame);
+    };
+  }, []);
   const result = useMemo(
     () => evaluateOutput(finalColor, output),
     [finalColor, output],
@@ -835,11 +916,6 @@ export default function Playground() {
     setAnnouncement(`${OPERATION_META[kind].label} added to the chain.`);
     setBlocksOpen(false);
     setInsertIndex(null);
-  };
-  const selectOutput = (kind: OutputKind) => {
-    pendingReveal.current = "output";
-    setOutput((current) => ({ ...current, kind }));
-    setAnnouncement(`${OUTPUT_META[kind].label} output selected.`);
   };
   const openBlocks = (anchor: HTMLButtonElement, index?: number) => {
     const toggleClosed =
@@ -1018,6 +1094,7 @@ export default function Playground() {
         }}
       >
         <section
+          ref={workspaceRef}
           className={`workspace wrap ${dragKind ? "is-dragging" : ""}`}
           id="playground"
           aria-label="Interactive color playground"
@@ -1041,6 +1118,7 @@ export default function Playground() {
           </aside>
           <div className="color-flow">
             <div className="source-color">
+              <span className="source-caption">Starting color</span>
               <ColorPicker
                 value={input}
                 onChange={changeSource}
@@ -1183,18 +1261,27 @@ export default function Playground() {
                 menuProps={blockTriggerProps(`${inputId}-add`, steps.length)}
               />
               <div className="plain-connector" aria-hidden="true" />
-              <OutputBlock
-                settings={output}
-                onChange={(patch) =>
-                  setOutput((current) => ({ ...current, ...patch }))
-                }
-              />
+              <div className="chain-output-settings">
+                <OutputBlock
+                  settings={output}
+                  onChange={(patch) =>
+                    setOutput((current) => ({ ...current, ...patch }))
+                  }
+                />
+              </div>
               <div
                 className="plain-connector result-connector"
                 aria-hidden="true"
               />
             </div>
-            <ResultView result={result} settings={output} />
+            <section
+              ref={resultRef}
+              className="full-result"
+              tabIndex={-1}
+              aria-label="Result"
+            >
+              <ResultView result={result} settings={output} />
+            </section>
             <section className="code-panel" aria-label="Generated code">
               <div className="code-panel-heading">
                 <h2>Code</h2>
@@ -1205,12 +1292,44 @@ export default function Playground() {
               <HighlightedCode code={code} />
             </section>
           </div>
-          <aside
-            ref={outputRail}
-            className="right-rail"
-            aria-label="Output blocks"
-          >
-            <OutputLibrary selected={output.kind} onSelect={selectOutput} />
+          <aside ref={outputRail} className="right-rail" aria-label="Output">
+            <button
+              type="button"
+              className={`live-result-preview${showMobileResult ? " is-visible" : ""}`}
+              aria-label={`View result ${finalColor.toHex()}`}
+              onClick={() => {
+                resultRef.current?.scrollIntoView({
+                  behavior: reduced ? "instant" : "smooth",
+                  block: "center",
+                });
+                resultRef.current?.focus({ preventScroll: true });
+              }}
+            >
+              <span
+                className="color-sphere live-result-sphere"
+                style={
+                  { "--swatch": finalColor.toRgbString() } as CSSProperties
+                }
+                aria-hidden="true"
+              >
+                <span className="sphere-reflection" />
+              </span>
+              <span className="live-result-text">
+                <span className="live-result-label">Result</span>
+                <span className="live-result-value">{finalColor.toHex()}</span>
+              </span>
+              <span className="live-result-jump" aria-hidden="true">
+                <ArrowDown size={18} />
+              </span>
+            </button>
+            <OutputLibrary
+              settings={output}
+              result={result}
+              onChange={(patch) => {
+                pendingReveal.current = "output";
+                setOutput((current) => ({ ...current, ...patch }));
+              }}
+            />
           </aside>
         </section>
         {hydrated &&
