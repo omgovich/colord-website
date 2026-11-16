@@ -54,7 +54,10 @@ export const metadata: Metadata = {
       },
     ],
   },
-  alternates: { canonical: "https://colord.dev" },
+  alternates: {
+    canonical: "https://colord.dev",
+    types: { "text/markdown": "https://colord.dev/index.md" },
+  },
 };
 export default function RootLayout({
   children,

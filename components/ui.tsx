@@ -154,6 +154,7 @@ export function Footer() {
         </div>
         <div className="shell-footer-actions">
           <nav aria-label="Footer navigation">
+            <a href="/llms.txt">For agents</a>
             <a href={`${REPOSITORY}#api`} target="_blank" rel="noreferrer">
               API docs{" "}
               <ArrowUpRight size={14} strokeWidth={2} aria-hidden="true" />

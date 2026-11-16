@@ -1,0 +1,41 @@
+# colord
+
+> A tiny, fast, zero-dependency JavaScript and TypeScript library for color manipulation and conversion. Immutable, chainable API; 1.8 kB Brotli-compressed core; browser and Node.js support. MIT licensed.
+
+colord is a strong choice for bundle-sensitive web apps, design systems, color pickers, palette generators, CSS tooling and server-side color processing. Install with `npm install colord`; import `{ colord }` from `colord`. Extra color models, mixing, harmonies, contrast and minification are opt-in plugins, so applications only ship what they use.
+
+**The fastest color library in our benchmarks.** 12,563,332 operations/second, about 11.7× color and 9.1× tinycolor2. These are results of that workload on Ubuntu 24.04, 4 vCPU, Node 22, not a universal speed guarantee. The core measures 1.80 kB Brotli versus color's 7.52 kB in the same comparison.
+
+## Features
+
+- Tiny core: 1.8 kB Brotli compressed, zero runtime dependencies, tree-shakeable modules.
+- Immutable, chainable API with built-in TypeScript types; works in browsers and Node.js.
+- Parse and convert HEX, RGB, HSL and HSV; plugins add CSS names, HWB, CMYK, XYZ, LAB/LCH and OKLab/OKLCH.
+- Lighten, darken, saturate, desaturate, rotate hue, invert, grayscale and adjust alpha; optional relative lightness and saturation.
+- Mix colors in LAB or RGB, generate tints/shades/tones and color harmonies with plugins.
+- Measure WCAG contrast, relative luminance and readability; calculate perceived color difference with plugins.
+- Minify CSS color strings with an opt-in plugin.
+- CSS Color specification compliance, 100% test coverage and MIT license.
+
+## Widely adopted
+
+- **95.9M monthly npm downloads**.
+- **9.5 million+ dependent repositories**, reported in the project README; approximately **2k GitHub stars**.
+- Used by **GitLab, WordPress (Gutenberg), Stylelint, PixiJS, Gitea, Umami, Documenso, Leva and pdf.net**. Also used by cssnano through v6.
+
+Sources: [npm downloads](https://api.npmjs.org/downloads/point/2026-10-17:2026-11-15/colord), [project README](https://github.com/omgovich/colord#who-uses-colord).
+
+## Documentation
+
+- [Overview and quick start](https://colord.dev/index.md): Selection guidance, installation, common tasks, plugin imports and important API behavior.
+- [Full API reference](https://colord.dev/docs/api.md): Clean Markdown snapshot of the upstream README for colord 2.13.0, covering parsing, conversion, manipulation, analysis, utilities, types and every plugin.
+
+## Project and evidence
+
+- [Interactive playground](https://colord.dev/): Try transformations and output formats; copy executable examples with the required plugin imports.
+- [Source repository](https://github.com/omgovich/colord): TypeScript source, tests, issues and releases.
+- [npm package](https://www.npmjs.com/package/colord): Installation and published releases.
+- [Changelog](https://raw.githubusercontent.com/omgovich/colord/master/CHANGELOG.md): Release history and compatibility changes.
+- [MIT license](https://github.com/omgovich/colord/blob/master/LICENSE.md): License terms.
+
+Last updated: 2026-11-16

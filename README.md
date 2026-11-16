@@ -32,6 +32,18 @@ Eight terminal outputs: Color, Palette, Harmony, Contrast, Readability, Differen
 
 Vercel detects the **Next.js** preset. No environment variables or external services are required. Add `colord.dev` to the project's domains when deploying.
 
+## Agent discovery
+
+`/llms.txt` links to `/index.md` (overview and practical examples) and `/docs/api.md`
+(upstream API snapshot).
+The homepage advertises them through HTTP Link headers, a Markdown alternate,
+a footer link and server-rendered SoftwareSourceCode/SoftwareApplication JSON-LD.
+The existing robots.txt allows all crawlers; no crawler-specific claims or access rules are needed.
+
+When the library API or benchmark snapshot changes, update the Markdown files and
+their source commit/date. Keep performance claims scoped to the measured workload
+and link to the evidence.
+
 ## Published metrics
 
 Metrics are a static snapshot checked on 2026-11-11:
