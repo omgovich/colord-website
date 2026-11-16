@@ -42,8 +42,8 @@
   opacity: 0.82;
 }
 .shell-crown {
-  width: calc(var(--shell-brand-size) * 1.0733);
-  height: calc(var(--shell-brand-size) * 0.84);
+  width: calc(var(--shell-brand-size) * 1.32);
+  height: auto;
   display: block;
   flex-shrink: 0;
   overflow: visible;

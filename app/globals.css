@@ -734,22 +734,6 @@ svg {
   justify-content: center;
   position: relative;
 }
-.relative-toggle {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  align-self: flex-start;
-  min-height: 32px;
-  font-size: 13px;
-  cursor: pointer;
-}
-.relative-toggle input {
-  width: 17px;
-  height: 17px;
-  margin: 0;
-  accent-color: var(--material-ink);
-  cursor: pointer;
-}
 .operation-card {
   scroll-margin-block: 24px;
   width: 100%;

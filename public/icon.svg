@@ -1,1 +1,23 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="-11 -26 160 160"><defs><linearGradient id="c" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#2aa0f4"/><stop offset=".52" stop-color="#fb335f"/><stop offset="1" stop-color="#f3d100"/></linearGradient></defs><path fill="url(#c)" d="M28 24L52.5 45.5L69 0L85.5 46.9495L108 22.8624L110.5 58.789L138 44.0917L126 89H69H12L0 44.0917L28.5 59.5L28 24ZM126 108V92H12V108H126Z"/></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-20 -100 480 480" fill="none">
+  <title>colord crown H2</title>
+  <defs>
+    <clipPath id="crown-body">
+      <path d="M 65,242 L 4,122 C -7,101 8,78 28,85 L 63,102 Q 78,110 83,94 L 95,62 C 100,44 114,43 127,54 L 158,78 Q 168,86 176,70 L 199,14 C 208,-4 229,-4 240,14 L 265,69 Q 272,86 284,76 L 313,53 C 328,42 341,48 346,66 L 356,99 Q 360,110 375,103 L 408,86 C 429,77 447,99 437,120 L 375,242 Q 220,201 65,242 Z"/>
+    </clipPath>
+    <linearGradient id="swatch-0" x1="0" y1="0" x2="0.2" y2="1" gradientUnits="objectBoundingBox"><stop stop-color="#2CA4E3"/><stop offset="1" stop-color="#3d99e1"/></linearGradient>
+    <linearGradient id="swatch-1" x1="0" y1="0" x2="0.2" y2="1" gradientUnits="objectBoundingBox"><stop stop-color="#7866DF"/><stop offset="1" stop-color="#8F68DC"/></linearGradient>
+    <linearGradient id="swatch-2" x1="0" y1="0" x2="0.2" y2="1" gradientUnits="objectBoundingBox"><stop stop-color="#F2638B"/><stop offset="1" stop-color="#F97887"/></linearGradient>
+    <linearGradient id="swatch-3" x1="0" y1="0" x2="0.2" y2="1" gradientUnits="objectBoundingBox"><stop stop-color="#FA9470"/><stop offset="1" stop-color="#f99d6c"/></linearGradient>
+    <linearGradient id="swatch-4" x1="0" y1="0" x2="0.2" y2="1" gradientUnits="objectBoundingBox"><stop stop-color="#F3C55B"/><stop offset="1" stop-color="#f3c55b"/></linearGradient>
+    <linearGradient id="band" x2="0.9" y2="1"><stop stop-color="#7E54BD"/><stop offset="1" stop-color="#7850b4"/></linearGradient>
+  </defs>
+  <g clip-path="url(#crown-body)">
+    <path d="M 65,242 L 4,122 C -7,101 8,78 28,85 L 63,102 Q 78,110 83,94 L 95,62 C 100,44 114,43 127,54 L 158,78 Q 168,86 176,70 L 199,14 C 208,-4 229,-4 240,14 L 265,69 Q 272,86 284,76 L 313,53 C 328,42 341,48 346,66 L 356,99 Q 360,110 375,103 L 408,86 C 429,77 447,99 437,120 L 375,242 Q 220,201 65,242 Z" fill="#F2638B"/>
+    <polygon points="0.000000,0 32.169574,0 149.231622,280 0.000000,280" fill="url(#swatch-0)"/>
+    <polygon points="32.169574,0 150.259939,0 199.495413,280 149.231622,280" fill="url(#swatch-1)"/>
+    <polygon points="150.259939,0 292.575490,0 233.632405,280 199.495413,280" fill="url(#swatch-2)"/>
+    <polygon points="292.575490,0 403.119053,0 291.694545,280 233.632405,280" fill="url(#swatch-3)"/>
+    <polygon points="403.119053,0 440.000000,0 440.000000,280 291.694545,280" fill="url(#swatch-4)"/>
+  </g>
+  <path d="M 79,250 Q 220,222 361,250 C 380,254 377,280 359,278 Q 220,250 81,278 C 62,281 60,254 79,250 Z" fill="url(#band)"/>
+</svg>

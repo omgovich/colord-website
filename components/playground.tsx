@@ -443,9 +443,8 @@ function AmountSlider({
         kind: step.kind,
         color: step.color,
         space: step.space,
-        relative: step.relative,
       }),
-    [before, step.kind, step.color, step.space, step.relative],
+    [before, step.kind, step.color, step.space],
   );
   const thumbColor = runChain(before, [step]).toHex();
   return (
@@ -551,16 +550,6 @@ function StepCard({
             <X size={16} />
           </button>
         </div>
-        {(step.kind === "lightness" || step.kind === "saturation") && (
-          <label className="relative-toggle">
-            <input
-              type="checkbox"
-              checked={step.relative ?? true}
-              onChange={(event) => onUpdate({ relative: event.target.checked })}
-            />
-            Relative
-          </label>
-        )}
         {step.kind === "mix" && (
           <div className="mix-parameters">
             <ParameterColor

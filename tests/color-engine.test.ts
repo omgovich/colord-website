@@ -142,25 +142,6 @@ test("lightness and saturation scale the current channel by default", () => {
   assert.equal(track[200], colord("hsl(30, 40%, 60%)").toHex());
 });
 
-test("relative can be disabled independently for each lightness and saturation block", () => {
-  const input = "hsl(30, 40%, 30%)";
-  for (const [kind, value, channel, expected] of [
-    ["lightness", 20, "l", 50],
-    ["lightness", -20, "l", 10],
-    ["saturation", 20, "s", 60],
-    ["saturation", -20, "s", 20],
-  ] as const) {
-    const operation = { ...step(kind, value), relative: false };
-    const result = runChain(input, [operation]);
-    assert.equal(result.toHsl()[channel], expected);
-    const code = generateCode(input, [operation], DEFAULT_OUTPUT);
-    assert.match(code, /relative: false/);
-    assert.equal(executeExample(code), result.toHex());
-    const stops = getOperationGradient(input, operation).match(/#[0-9a-f]+/g)!;
-    assert.equal(stops[value + 100], result.toHex());
-  }
-});
-
 test("all transform types and mixing spaces produce executable, matching examples", () => {
   for (const steps of [
     [step("mix", 37, "tomato", "rgb")],

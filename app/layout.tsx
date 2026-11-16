@@ -37,7 +37,7 @@ export const metadata: Metadata = {
     url: "https://colord.dev",
     images: [
       {
-        url: "/og.png",
+        url: "/og.png?v=2",
         width: 1200,
         height: 630,
         type: "image/png",
@@ -49,7 +49,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     images: [
       {
-        url: "/og.png",
+        url: "/og.png?v=2",
         alt: "colord — Powerful color tools. Ridiculously small. 1.8 kB · Zero dependencies.",
       },
     ],

@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 440 280" fill="none" color="#ffffff">
+  <title>colord crown — white</title>
+  <defs>
+    <clipPath id="crown-body">
+      <path d="M 65,242 L 4,122 C -7,101 8,78 28,85 L 63,102 Q 78,110 83,94 L 95,62 C 100,44 114,43 127,54 L 158,78 Q 168,86 176,70 L 199,14 C 208,-4 229,-4 240,14 L 265,69 Q 272,86 284,76 L 313,53 C 328,42 341,48 346,66 L 356,99 Q 360,110 375,103 L 408,86 C 429,77 447,99 437,120 L 375,242 Q 220,201 65,242 Z"/>
+    </clipPath>
+  </defs>
+  <g clip-path="url(#crown-body)">
+    <polygon points="0.000000,0 32.169574,0 149.231622,280 0.000000,280" fill="currentColor" opacity="0.48"/>
+    <polygon points="32.169574,0 150.259939,0 199.495413,280 149.231622,280" fill="currentColor" opacity="0.72"/>
+    <polygon points="150.259939,0 292.575490,0 233.632405,280 199.495413,280" fill="currentColor" opacity="1"/>
+    <polygon points="292.575490,0 403.119053,0 291.694545,280 233.632405,280" fill="currentColor" opacity="0.78"/>
+    <polygon points="403.119053,0 440.000000,0 440.000000,280 291.694545,280" fill="currentColor" opacity="0.54"/>
+  </g>
+  <path d="M 79,250 Q 220,222 361,250 C 380,254 377,280 359,278 Q 220,250 81,278 C 62,281 60,254 79,250 Z" fill="currentColor" opacity="0.9"/>
+</svg>

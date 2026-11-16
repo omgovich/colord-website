@@ -2,25 +2,19 @@
 
 import Link from "next/link";
 import { ArrowUpRight, Check, Copy, Github } from "lucide-react";
-import { useEffect, useId, useRef, useState, type ReactNode } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 
 const REPOSITORY = "https://github.com/omgovich/colord";
-const CROWN =
-  "M28 24L52.5 45.5L69 0L85.5 46.9495L108 22.8624L110.5 58.789L138 44.0917L126 89H69H12L0 44.0917L28.5 59.5L28 24ZM126 108V92H12V108H126Z";
-
 export function Mark() {
-  const id = useId();
   return (
-    <svg className="shell-crown" viewBox="0 0 138 108" aria-hidden="true">
-      <defs>
-        <linearGradient id={id} x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0" stopColor="#2aa0f4" />
-          <stop offset=".52" stopColor="#fb335f" />
-          <stop offset="1" stopColor="#f3d100" />
-        </linearGradient>
-      </defs>
-      <path d={CROWN} fill={`url(#${id})`} />
-    </svg>
+    <img
+      className="shell-crown"
+      src="/brand/colord-crown-h2.svg"
+      width={440}
+      height={280}
+      alt=""
+      aria-hidden="true"
+    />
   );
 }
 
